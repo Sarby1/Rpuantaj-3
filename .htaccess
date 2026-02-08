@@ -1,0 +1,30 @@
+# Puantaj Pro VDS - cPanel Yapılandırması
+
+# Varsayılan giriş dosyasını ayarla
+DirectoryIndex index.php index.html
+
+# Klasör listelemeyi kapat (Güvenlik için)
+Options -Indexes
+
+# Veritabanı dosyasını doğrudan erişime kapat
+<Files "data.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Arşiv klasörünü doğrudan erişime kapat
+# (PHP kodunuz bu dosyalara hala erişebilir ama tarayıcıdan doğrudan açılamaz)
+<IfModule mod_authz_core.c>
+    <Directory "archives">
+        Require all denied
+    </Directory>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <Directory "archives">
+        Order Allow,Deny
+        Deny from all
+    </Directory>
+</IfModule>
+
+# PHP Hata raporlamasını kapat (Production ortamı için güvenli)
+# php_flag display_errors Off
